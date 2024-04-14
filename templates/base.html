@@ -15,10 +15,14 @@
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="http://127.0.0.1:5000/">MailWorld</a>
         <div style="display: flex; justify-content: flex-end;">
-            <button class="example pinterest left-button" onclick="window.location='http://127.0.0.1:5000/register'">
-                Регистрация
-            </button>
-            <button class="example pinterest" onclick="window.location='http://127.0.0.1:5000/login'"> Войти </button>
+            {% if current_user.is_authenticated %}
+                 <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+            {% else %}
+                <button class="example pinterest left-button" onclick="window.location='http://127.0.0.1:5000/register'">
+                    Регистрация
+                </button>
+                <button class="example pinterest" onclick="window.location='http://127.0.0.1:5000/login'"> Войти</button>
+            {% endif %}
         </div>
     </nav>
 </header>
