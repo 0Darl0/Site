@@ -13,15 +13,20 @@
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="http://127.0.0.1:5000/">MailWorld</a>
+        <a class="navbar-brand" href="http://127.0.0.1:5000/">
+            <img src="static/img/MailWorld.png" alt="buttonpng" border="0" width="250" height="50"/>
+        </a>
         <div style="display: flex; justify-content: flex-end;">
             {% if current_user.is_authenticated %}
-                 <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+                <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+                <button class="image-button" onclick="window.location='/settings'">
+                    <img src="static/img/settings.png" alt="buttonpng" border="0" width="25" height="25"/>
+                </button>
             {% else %}
-                <button class="example pinterest left-button" onclick="window.location='http://127.0.0.1:5000/register'">
+                <button class="example pinterest left-button" onclick="window.location='/register'">
                     Регистрация
                 </button>
-                <button class="example pinterest" onclick="window.location='http://127.0.0.1:5000/login'"> Войти</button>
+                <button class="example pinterest" onclick="window.location='/login'">Войти</button>
             {% endif %}
         </div>
     </nav>

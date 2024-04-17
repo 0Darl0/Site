@@ -71,5 +71,9 @@ def logout():
     logout_user()
     return redirect("/")
 
+
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    return render_template('settings.html', title='Настройки')
 if __name__ == '__main__':
     main()

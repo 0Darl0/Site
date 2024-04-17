@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if current_user.is_authenticated %}
+    {% else %}
+        <head>
+            <meta http-equiv="refresh" content="0.001; url=/">
+        </head>
+    {% endif %}
+{% endblock %}
