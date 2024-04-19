@@ -17,3 +17,10 @@ class LoginForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
+
+
+class Letter(FlaskForm):
+    who = EmailField('Кому:', validators=[DataRequired()])
+    theme = StringField('Тема:', validators=[DataRequired()])
+    message = StringField('Напишите письмо:', validators=[DataRequired()])
+    submit = SubmitField('Войти')

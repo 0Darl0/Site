@@ -9,7 +9,7 @@ app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-with open('api_key.txt', mode='r') as f_in:
+with open('app_key.txt', mode='r') as f_in:
     app.config['SECRET_KEY'] = f_in.read()
 
 
@@ -41,6 +41,8 @@ def reqister():
         db_sess.commit()
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
+
+
 @app.route('/')
 def index():
     return render_template('index.html', title='Почта')
@@ -50,6 +52,7 @@ def index():
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -65,6 +68,7 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -75,5 +79,7 @@ def logout():
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     return render_template('settings.html', title='Настройки')
+
+
 if __name__ == '__main__':
     main()
