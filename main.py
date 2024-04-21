@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user
-from forms.user import RegisterForm, LoginForm
+from forms.user import RegisterForm, LoginForm, Letter, Back_or_Write
 from data import db_session
 from data.users import User
 
@@ -43,9 +43,24 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html', title='Почта')
+    form = Letter()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        if db_sess.query(User).filter(User.email == form.who.data).first():
+            redirect('/succes')
+        else:
+            return render_template('index.html', title='Письмо', form=form,
+                                   message='Проверьте корректность ввода электронной почты')
+    return render_template('index.html', title='Письмо', form=form)
+
+
+@app.route('/succes', methods=['GET', 'POST'])
+def succes():
+    form = Back_or_Write()
+    return render_template('succses.html', title='Успешно', form=form)
+
 
 
 @login_manager.user_loader

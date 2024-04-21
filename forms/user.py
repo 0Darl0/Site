@@ -22,5 +22,10 @@ class LoginForm(FlaskForm):
 class Letter(FlaskForm):
     who = EmailField('Кому:', validators=[DataRequired()])
     theme = StringField('Тема:', validators=[DataRequired()])
-    message = StringField('Напишите письмо:', validators=[DataRequired()])
-    submit = SubmitField('Войти')
+    message = TextAreaField('Напишите письмо:')
+    submit = SubmitField('Отправить')
+
+
+class Back_or_Write(FlaskForm):
+    back = SubmitField('Назад')
+    write = SubmitField('Написать ещё')
