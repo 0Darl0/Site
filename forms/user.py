@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+import flask_login
 from wtforms import PasswordField, StringField, TextAreaField, SubmitField, EmailField,BooleanField
 from wtforms.validators import DataRequired
 
@@ -18,6 +19,12 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
 
+
+class SettingForm(FlaskForm):
+    name = StringField('Имя пользователя')
+    surname = StringField('Фамилия пользователя')
+    tg_id = StringField('Telegramm')
+    submit = SubmitField('Сохранить изменения')
 
 class Letter(FlaskForm):
     who = EmailField('Кому:', validators=[DataRequired()])

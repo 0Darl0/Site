@@ -16,6 +16,8 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                       default=datetime.datetime.now)
+    tg_nickname = sqlalchemy.Column(sqlalchemy.String)
+    tg_chat = sqlalchemy.Column(sqlalchemy.Integer)
     #news = orm.relation("News", back_populates='user')
 
     def __repr__(self):
