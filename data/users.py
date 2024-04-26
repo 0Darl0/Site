@@ -28,7 +28,7 @@ class User(SqlAlchemyBase, UserMixin):
     )
 
     def __repr__(self):
-        return f'{self.id} {self.surname} {self.name}'
+        return f'{self.id} {self.surname} {self.name} {self.email}'
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

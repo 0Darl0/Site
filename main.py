@@ -58,12 +58,19 @@ def index():
         return redirect('/letter')
     db_sess = db_session.create_session()
     try:
-        if db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0])).first():
-            le = db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0]))
+        if db_sess.query(Letters).filter(Letters.who_id == int(str(current_user).split(' ')[0])).first():
+            le = db_sess.query(Letters).filter(Letters.who_id == int(str(current_user).split(' ')[0]))
             print(le)
     except ValueError:
-        print(db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0])))
-    return render_template('index.html', title='Главная', form=form, letter=le)
+        print(str(current_user).split(' ')[0])
+    return render_template('index.html', title='Главная', form=form, letters=le)
+
+
+@app.route('/letters/<int:number>')
+def letters(number):
+    db_sess = db_session.create_session()
+    le = db_sess.query(Letters).filter(Letters.id == int(number)).first()
+    return render_template('letter.html', title='Письмо', let=le)
 
 
 @app.route('/letter', methods=['GET', 'POST'])

@@ -3,8 +3,8 @@
     {% if current_user.is_authenticated %}
     <h3>Писем пока нет</h3>
     {% for item in letters %}
-        <p>item</p>
-        <button type="submit" class="pulse">{{item.topic}}</button>
+        <a href="/letters/{{item.id}}">{{item.topic}}</a>
+        <br>
     {% endfor %}
 <form action="" method="post">
             {{ form.hidden_tag() }}
