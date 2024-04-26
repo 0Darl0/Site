@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-<h3> Письмо успешно отправлено! </h3>
-<form action="" method="post">
-    {{ form.hidden_tag() }}
-    <p>{{ form.back(type="submit", class="btn btn-primary") }}</p>
-    <p>{{ form.write(type="submit", class="btn btn-primary") }}</p>
-</form>
+    {% if current_user.is_authenticated %}
+        <h3> Письмо успешно отправлено! </h3>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>{{ form.back(type="submit", class="btn btn-primary") }}</p>
+            <p>{{ form.write(type="submit", class="btn btn-primary") }}</p>
+        </form>
+{% else %}
+<h3> Вам не положено сдесь находиться :)</h3>
+{% endif %}
 {% endblock %}

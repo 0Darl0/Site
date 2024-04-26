@@ -29,3 +29,7 @@ class Letter(FlaskForm):
 class Back_or_Write(FlaskForm):
     back = SubmitField('Назад')
     write = SubmitField('Написать ещё')
+
+
+class Index(FlaskForm):
+    new_l = SubmitField('Написать письмо')

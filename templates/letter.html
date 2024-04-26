@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if current_user.is_authenticated %}
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.who.label }}<br>
+            {{ form.who(class="form-control", type="who") }}<br>
+            {% for error in form.who.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.theme.label }}<br>
+            {{ form.theme(class="form-control", type="theme") }}<br>
+            {% for error in form.theme.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.message.label }}<br>
+            {{ form.message(class="form-control", type="message") }}<br>
+            {% for error in form.message.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <div>{{message}}</div>
+    </form>
+{% endif %}
+{% endblock %}

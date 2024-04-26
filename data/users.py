@@ -16,10 +16,10 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                       default=datetime.datetime.now)
-    #news = orm.relation("News", back_populates='user')
+    # let = orm.relationship("Letters", back_populates='users')
 
     def __repr__(self):
-        return f'{self.id} {self.surname} {self.name}'
+        return f'{self.id} {self.surname} {self.name} {self.email}'
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

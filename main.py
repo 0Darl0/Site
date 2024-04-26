@@ -1,8 +1,10 @@
 from flask import Flask, render_template, redirect
-from flask_login import LoginManager, login_user, login_required, logout_user
-from forms.user import RegisterForm, LoginForm, Letter, Back_or_Write
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from forms.user import RegisterForm, LoginForm, Letter, Back_or_Write, Index
 from data import db_session
 from data.users import User
+from random import randint
+from data.letters import Letters
 
 
 app = Flask(__name__)
@@ -45,20 +47,48 @@ def reqister():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    form = Index()
+    le = ''
+    if form.validate_on_submit():
+        return redirect('/letter')
+    db_sess = db_session.create_session()
+    if db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0])).first():
+        le=db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0]))
+    return render_template('index.html', title='Главная', form=form, letter=le)
+
+
+@app.route('/letter', methods=['GET', 'POST'])
+def letter():
     form = Letter()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.who.data).first():
-            redirect('/succes')
+            print(db_sess.query(User).filter(User.email == form.who.data).first().email)
+            user = db_sess.query(User).filter(User.id == int(str(current_user).split(' ')[0])).first()
+            lett = Letters(
+                id=randint(1, 10**10),
+                user_id=user.id,
+                who_id=db_sess.query(User).filter(User.email == form.who.data).first().id,
+                topic=form.theme.data,
+                content=form.message.data
+            )
+            db_sess.add(lett)
+            db_sess.commit()
+            return redirect('/succes')
         else:
-            return render_template('index.html', title='Письмо', form=form,
+            return render_template('letter.html', title='Письмо', form=form,
                                    message='Проверьте корректность ввода электронной почты')
-    return render_template('index.html', title='Письмо', form=form)
+    return render_template('letter.html', title='Письмо', form=form)
 
 
 @app.route('/succes', methods=['GET', 'POST'])
 def succes():
     form = Back_or_Write()
+    if form.validate_on_submit():
+        if form.back.data:
+            return redirect('/')
+        elif form.write.data:
+            return redirect('/letter')
     return render_template('succses.html', title='Успешно', form=form)
 
 
