@@ -26,6 +26,7 @@ class SettingForm(FlaskForm):
     tg_id = StringField('Telegramm')
     submit = SubmitField('Сохранить изменения')
 
+
 class Letter(FlaskForm):
     who = EmailField('Кому:', validators=[DataRequired()])
     theme = StringField('Тема:', validators=[DataRequired()])
