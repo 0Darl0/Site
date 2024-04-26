@@ -1,11 +1,16 @@
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from forms.user import RegisterForm, LoginForm, Letter, Back_or_Write, Index
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+
 from data import db_session
 from data.users import User
 from random import randint
 from data.letters import Letters
 
+from data.letters import Letters
+from forms.user import RegisterForm, LoginForm, Letter, Back_or_Write, SettingForm
+from tg_bot import notification
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -53,7 +58,7 @@ def index():
         return redirect('/letter')
     db_sess = db_session.create_session()
     if db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0])).first():
-        le=db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0]))
+        le = db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0]))
     return render_template('index.html', title='Главная', form=form, letter=le)
 
 
@@ -92,7 +97,6 @@ def succes():
     return render_template('succses.html', title='Успешно', form=form)
 
 
-
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
@@ -123,7 +127,27 @@ def logout():
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
-    return render_template('settings.html', title='Настройки')
+    form = SettingForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.id == int(str(current_user).split(' ')[0])).first()
+        if form.surname.data != '':
+            if user:
+                user.surname = form.surname.data
+                db_sess.commit()
+        if form.name.data != '':
+            if user:
+                user.name = form.name.data
+                db_sess.commit()
+        if form.tg_id.data != '':
+            check = (db_sess.query(User).filter(User.tg_nickname == form.tg_id).first)
+            print(check.tg_id)
+            if user:
+                user.tg_nickname = form.tg_id.data
+                db_sess.commit()
+        db_sess.commit()
+        return redirect('/')
+    return render_template('settings.html', title='Настройки', form=form)
 
 
 if __name__ == '__main__':
