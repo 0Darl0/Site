@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from forms.user import RegisterForm, LoginForm, Letter, Back_or_Write, Index
+from forms.user import RegisterForm, LoginForm, Letter, Back_or_Write, Index, BB
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 from data import db_session
@@ -66,11 +66,14 @@ def index():
     return render_template('index.html', title='Главная', form=form, letters=le)
 
 
-@app.route('/letters/<int:number>')
+@app.route('/letters/<int:number>', methods=['GET', 'POST'])
 def letters(number):
+    form = BB()
     db_sess = db_session.create_session()
     le = db_sess.query(Letters).filter(Letters.id == int(number)).first()
-    return render_template('letter.html', title='Письмо', let=le)
+    if form.validate_on_submit():
+        return redirect('/')
+    return render_template('letters.html', title='Письмо', let=le, form=form)
 
 
 @app.route('/letter', methods=['GET', 'POST'])

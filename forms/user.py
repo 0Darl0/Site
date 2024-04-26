@@ -41,3 +41,7 @@ class Back_or_Write(FlaskForm):
 
 class Index(FlaskForm):
     new_l = SubmitField('Написать письмо')
+
+
+class BB(FlaskForm):
+    bb = SubmitField('Назад')
