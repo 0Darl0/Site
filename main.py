@@ -57,8 +57,11 @@ def index():
     if form.validate_on_submit():
         return redirect('/letter')
     db_sess = db_session.create_session()
-    if db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0])).first():
-        le = db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0]))
+    try:
+        if db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0])).first():
+            le = db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0]))
+    except ValueError:
+        pass
     return render_template('index.html', title='Главная', form=form, letter=le)
 
 
