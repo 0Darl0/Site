@@ -18,5 +18,5 @@ class Letters(SqlAlchemyBase):
                                      default=datetime.datetime.now)
     is_delete = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
 
-    # user = orm.relationship('User', back_populates='letters', foreign_keys="[Letters.user_id]")
+    user = orm.relationship('User', secondary="association", backref="news")
     # who = orm.relationship('User', back_populates='letters', foreign_keys="[Letters.who_id]")

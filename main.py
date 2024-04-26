@@ -10,7 +10,7 @@ from data.letters import Letters
 
 from data.letters import Letters
 from forms.user import RegisterForm, LoginForm, Letter, Back_or_Write, SettingForm
-from tg_bot import notification
+# from tg_bot import notification
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -60,8 +60,9 @@ def index():
     try:
         if db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0])).first():
             le = db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0]))
+            print(le)
     except ValueError:
-        pass
+        print(db_sess.query(User).filter(Letters.who_id == int(str(current_user).split(' ')[0])))
     return render_template('index.html', title='Главная', form=form, letter=le)
 
 

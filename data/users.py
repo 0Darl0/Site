@@ -18,7 +18,14 @@ class User(SqlAlchemyBase, UserMixin):
                                       default=datetime.datetime.now)
     tg_nickname = sqlalchemy.Column(sqlalchemy.String)
     tg_chat = sqlalchemy.Column(sqlalchemy.Integer)
-    #news = orm.relation("News", back_populates='user')
+    association_table = sqlalchemy.Table(
+        'association',
+        SqlAlchemyBase.metadata,
+        sqlalchemy.Column('user', sqlalchemy.Integer,
+                          sqlalchemy.ForeignKey('users.id')),
+        sqlalchemy.Column('letter', sqlalchemy.Integer,
+                          sqlalchemy.ForeignKey('letters.id'))
+    )
 
     def __repr__(self):
         return f'{self.id} {self.surname} {self.name}'
