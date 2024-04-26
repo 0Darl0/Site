@@ -23,7 +23,7 @@ class LoginForm(FlaskForm):
 class SettingForm(FlaskForm):
     name = StringField('Имя пользователя')
     surname = StringField('Фамилия пользователя')
-    tg_id = StringField('Telegramm')
+    tg_id = StringField('Telegram(Логин без ссылки и без "@")')
     submit = SubmitField('Сохранить изменения')
 
 
