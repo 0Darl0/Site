@@ -46,6 +46,15 @@ def reqister():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
+        lett = Letters(
+            id=randint(1, 10**10),
+            user_id='Sozdatel24@mw.ru',
+            who_id=form.email.data,
+            topic='Добро пожаловать',
+            content='Мы рады, что вы выбрали нашу почту'
+        )
+        db_sess.add(lett)
+        db_sess.commit()
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
 
@@ -86,13 +95,15 @@ def letter():
             user = db_sess.query(User).filter(User.id == int(str(current_user).split(' ')[0])).first()
             lett = Letters(
                 id=randint(1, 10**10),
-                user_id=user.id,
-                who_id=db_sess.query(User).filter(User.email == form.who.data).first().id,
+                user_id=user.email,
+                who_id=db_sess.query(User).filter(User.email == form.who.data).first().email,
                 topic=form.theme.data,
                 content=form.message.data
             )
             db_sess.add(lett)
             db_sess.commit()
+            if db_sess.query(User).filter(User.email == form.who.data).first().tg_chat:
+                notification(db_sess.query(User).filter(User.email == form.who.data).first().tg_chat, form.message.data)
             return redirect('/succes')
         else:
             return render_template('letter.html', title='Письмо', form=form,
